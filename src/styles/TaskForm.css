@@ -1,0 +1,28 @@
+/* Task Form Styles */
+.task-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 0;
+}
+
+.task-form-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.task-form-card h2 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-color);
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+}
+
+.task-form-card form {
+  display: flex;
+  flex-direction: column;
+}

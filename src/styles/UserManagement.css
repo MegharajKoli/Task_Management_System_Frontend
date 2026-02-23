@@ -1,0 +1,82 @@
+/* User Management Styles */
+.user-management-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+}
+
+.user-management-header h2 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.user-form-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+}
+
+.user-form-card h3 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-color);
+}
+
+.user-form-card form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.user-form-card button {
+  grid-column: 1 / -1;
+  justify-self: flex-end;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.user-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.user-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.user-card h3 {
+  margin: 0 0 1rem 0;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.user-card p {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+  word-break: break-all;
+}
+
+.user-card strong {
+  color: #666;
+  font-weight: 600;
+}

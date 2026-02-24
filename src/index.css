@@ -81,3 +81,29 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* ===== DARK THEME ===== */
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+[data-theme='dark'] body {
+  color: #e0e0e0;
+  background-color: #121212;
+}
+
+[data-theme='dark'] a {
+  color: #64b5f6;
+}
+
+[data-theme='dark'] a:hover {
+  color: #90caf9;
+}
+
+[data-theme='dark'] button {
+  background-color: #1e88e5;
+}
+
+[data-theme='dark'] button:hover {
+  background-color: #1565c0;
+}

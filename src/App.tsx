@@ -1,9 +1,40 @@
 
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { TasksPage, UserManagement, Dashboard } from './components';
+import { useAppDispatch, useAppSelector } from './store';
+import { setTheme ,toggleTheme} from './store/themeSlices';
 import './App.css';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state) => state.theme.mode);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme) {
+      if (savedTheme !== theme) {
+        dispatch(setTheme(savedTheme));
+      }
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', initialTheme);
+    }
+  }, []);
+
+  // Update DOM and localStorage when theme changes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const handleThemeToggle = () => {
+    dispatch(toggleTheme());
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -22,6 +53,9 @@ function App() {
               <Link to="/dashboard">Dashboard</Link>
             </li>
           </ul>
+          <button className="theme-toggle-btn" onClick={handleThemeToggle} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
         </nav>
 
         <main className="main-content">
@@ -41,3 +75,4 @@ function App() {
 }
 
 export default App;
+

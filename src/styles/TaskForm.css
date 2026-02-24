@@ -1,4 +1,5 @@
 /* Task Form Styles */
+
 .task-form-container {
   display: flex;
   justify-content: center;
@@ -7,10 +8,10 @@
 }
 
 .task-form-card {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 600px;
 }
@@ -18,7 +19,7 @@
 .task-form-card h2 {
   margin: 0 0 1.5rem 0;
   color: var(--text-color);
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
 }
 

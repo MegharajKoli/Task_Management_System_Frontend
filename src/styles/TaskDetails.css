@@ -1,9 +1,10 @@
 /* Task Details Styles */
+
 .task-details-container {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 .task-details-header {
@@ -11,7 +12,7 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
 }
 
@@ -56,7 +57,8 @@
 
 .info-item label {
   font-weight: 600;
-  color: #666;
+  color: var(--text-color);
+  opacity: 0.7; /* keeps light gray feel */
   font-size: 0.9rem;
   text-transform: uppercase;
 }
@@ -68,11 +70,12 @@
 }
 
 /* Comments Section */
+
 .comments-section {
-  background-color: #f9f9f9;
+  background-color: var(--card-bg);
   border-radius: 8px;
   padding: 1.5rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
 }
 
 .comments-section h3 {
@@ -87,11 +90,12 @@
 }
 
 .comment-item {
-  background-color: white;
+  background-color: var(--card-bg);
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 4px;
   border-left: 3px solid var(--primary-color);
+  border: 1px solid var(--border-color);
 }
 
 .comment-text {
@@ -108,7 +112,8 @@
 }
 
 .comment-date {
-  color: #999;
+  color: var(--text-color);
+  opacity: 0.6;
 }
 
 .add-comment-form {
@@ -119,10 +124,12 @@
 
 .add-comment-form textarea {
   padding: 0.75rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-family: inherit;
   resize: vertical;
+  background-color: var(--card-bg);
+  color: var(--text-color);
 }
 
 .add-comment-form textarea:focus {
@@ -134,5 +141,6 @@
 .loading {
   text-align: center;
   padding: 1rem;
-  color: #999;
+  color: var(--text-color);
+  opacity: 0.6;
 }

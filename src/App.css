@@ -8,7 +8,9 @@
   --text-color: #333;
   --border-color: #e0e0e0;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --card-bg: #ffffff;
 }
+
 
 * {
   margin: 0;
@@ -24,6 +26,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
   color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -248,10 +251,11 @@ body {
 
 /* Cards */
 .card {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: var(--shadow);
+  transition: background-color 0.3s ease;
 }
 
 /* Badges */
@@ -302,4 +306,31 @@ body {
   .form-actions {
     flex-direction: column;
   }
+}
+/* ===== DARK THEME VARIABLES (IMPROVED) ===== */
+[data-theme='dark'] {
+  --primary-color: #64b5f6;
+  --secondary-color: #ffb74d;
+  --danger-color: #ef5350;
+  --success-color: #66bb6a;
+  --warning-color: #ffb74d;
+
+  --bg-color: #121212;          /* App background */
+  --text-color: #e6e6e6;
+  --border-color: #2a2a2a;
+
+  --card-bg: #1e1e1e;           /* Card surface */
+  --surface-2: #242424;         /* Slightly elevated surface */
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+[data-theme='dark'] .app-footer {
+  background-color: #181818;
+  color: #bdbdbd;
+}
+[data-theme='dark'] .navbar {
+  background-color: #1f2a36;
+}
+[data-theme='dark'] .card {
+  background-color: var(--card-bg);
 }

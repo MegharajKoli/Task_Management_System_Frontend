@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Status, Priority } from '../types';
 import type { ITask, StatusType, PriorityType } from '../types';
-import { taskService } from '../api/taskService';
+import { useAppDispatch, useAppSelector } from '../store';
+import { fetchTasks } from '../store/taskSlice';
 import '../styles/TaskList.css';
 
 interface TaskListProps {
@@ -11,29 +12,14 @@ interface TaskListProps {
 }
 
 export const TaskList: React.FC<TaskListProps> = ({ onTaskSelect, onCreateNew, refreshTrigger }) => {
-  const [tasks, setTasks] = useState<ITask[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { tasks, loading, error } = useAppSelector(state => state.tasks);
   const [filterStatus, setFilterStatus] = useState<StatusType | 'All'>('All');
   const [filterPriority, setFilterPriority] = useState<PriorityType | 'All'>('All');
 
   useEffect(() => {
-    fetchTasks();
-  }, [refreshTrigger]);
-
-  const fetchTasks = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await taskService.getTasks();
-      setTasks(data);
-    } catch (err) {
-      setError('Failed to load tasks');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchTasks());
+  }, [dispatch, refreshTrigger]);
 
   const filteredTasks = tasks.filter((task) => {
     const statusMatch = filterStatus === 'All' || task.status === filterStatus;
@@ -68,6 +54,7 @@ export const TaskList: React.FC<TaskListProps> = ({ onTaskSelect, onCreateNew, r
   };
 
   if (loading) return <div className="task-list-loading">Loading tasks...</div>;
+  if (error) return <div className="error-message">Error: {error}</div>;
 
   return (
     <div className="task-list-container">
@@ -103,12 +90,12 @@ export const TaskList: React.FC<TaskListProps> = ({ onTaskSelect, onCreateNew, r
           </select>
         </div>
 
-        <button className="btn-secondary" onClick={fetchTasks}>
+        <button className="btn-secondary" onClick={() => dispatch(fetchTasks())}>
           Refresh
         </button>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="error-message">Error: {error}</div>}
 
       <div className="task-list">
         {filteredTasks.length === 0 ? (

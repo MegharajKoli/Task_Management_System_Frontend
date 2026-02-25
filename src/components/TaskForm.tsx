@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Status, Priority } from '../types';
-import type { ITask, CreateTaskDTO, UpdateTaskDTO, IUser } from '../types';
-import { taskService } from '../api/taskService';
-import { userService } from '../api/userService';
+import type { ITask } from '../types';
+import { fetchUsers } from '../store/userSlice';
+import { useAppDispatch, useAppSelector } from '../store';
+import {  updateTask , createTask } from '../store/taskSlice';
 import '../styles/TaskForm.css';
 
 interface TaskFormProps {
@@ -19,9 +20,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
     priority: Priority.Medium as typeof Priority[keyof typeof Priority],
     status: Status.Open as typeof Status[keyof typeof Status],
   });
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { loading, error, submitting } = useAppSelector(state => state.tasks);
+  const { users: userList, loading: usersLoading, error: usersError } = useAppSelector(state => state.users);
 
   useEffect(() => {
     if (task) {
@@ -33,52 +34,17 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
         status: task.status as typeof Status[keyof typeof Status],
       });
     }
-    fetchUsers();
-  }, [task]);
-
-  const fetchUsers = async () => {
-    try {
-      const data = await userService.getUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to load users:', err);
-      setError('Failed to load users');
-    }
-  };
+    dispatch(fetchUsers());
+  }, [task, dispatch]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (task?._id) {
-        // Update existing task
-        const updateData: UpdateTaskDTO = {
-          title: formData.title,
-          description: formData.description,
-          assigned_to: formData.assigned_to,
-          priority: formData.priority,
-          status: formData.status,
-        };
-        await taskService.updateTask(task._id, updateData);
-      } else {
-        // Create new task
-        const createData: CreateTaskDTO = {
-          title: formData.title,
-          description: formData.description,
-          assigned_to: formData.assigned_to,
-          priority: formData.priority,
-        };
-        await taskService.createTask(createData);
-      }
-      onSave();
-    } catch (err) {
-      setError('Failed to save task');
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (task?._id) {
+      dispatch(updateTask({ id: task._id, updateData: formData }));
+    } else {
+      dispatch(createTask(formData));
     }
+    onSave();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -134,7 +100,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
                 required
               >
                 <option value="">Select a user</option>
-                {users.map((user) => (
+                {userList.map((user) => (
                   <option key={user._id} value={user.email}>
                     {user.name}
                   </option>
@@ -169,11 +135,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
+              {submitting ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
             </button>
             <button type="button" className="btn-secondary" onClick={onCancel} disabled={loading}>
               Cancel
             </button>
+            {loading && <div className="loading-message">Loading...</div>}
+            {usersLoading && <div className="loading-message">Loading users...</div>}
+            {usersError && <div className="error-message">{usersError}</div>}
           </div>
         </form>
       </div>

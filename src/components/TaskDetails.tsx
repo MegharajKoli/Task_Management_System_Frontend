@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import type { ITask, IComment } from '../types';
-import { taskService } from '../api/taskService';
-import { commentService } from '../api/commentService';
+import type { ITask } from '../types';
+import { deleteTask } from '../store/taskSlice';
+import { useAppDispatch, useAppSelector } from '../store';
+import { fetchCommentsByTaskId, createComment, deleteComment } from '../store/commentSlice';
 import '../styles/TaskDetails.css';
 
 interface TaskDetailsProps {
@@ -12,68 +13,32 @@ interface TaskDetailsProps {
 }
 
 export const TaskDetails: React.FC<TaskDetailsProps> = ({ task, onEdit, onDelete, onBack }) => {
-  const [comments, setComments] = useState<IComment[]>([]);
+  const dispatch = useAppDispatch();
   const [newComment, setNewComment] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const { comments, loading, error, submitting } = useAppSelector(state => state.comments);
 
   useEffect(() => {
-    fetchComments();
-  }, [task._id]);
-
-  const fetchComments = async () => {
-    setLoading(true);
-    try {
-      const data = await commentService.getCommentsByTask(task._id);
-      setComments(data);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to load comments:', err);
-      setError('Failed to load comments');
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchCommentsByTaskId(task._id));
+  }, [task._id, dispatch]);
 
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-
-    setSubmitting(true);
-    try {
-      await commentService.addComment(task._id, { content: newComment });
-      setNewComment('');
-      await fetchComments();
-    } catch (err) {
-      console.error('Failed to add comment:', err);
-      setError('Failed to add comment');
-    } finally {
-      setSubmitting(false);
-    }
+    dispatch(createComment({ id: task._id, commentData: { content: newComment } }))
+      .unwrap()
+      .then(() => setNewComment(''));
   };
 
   const handleDeleteComment = async (commentId: string) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
-      try {
-        await commentService.deleteComment(commentId);
-        await fetchComments();
-      } catch (err) {
-        console.error('Failed to delete comment:', err);
-        setError('Failed to delete comment');
-      }
+      dispatch(deleteComment(commentId));
     }
   };
 
   const handleDeleteTask = async () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
-      try {
-        await taskService.deleteTask(task._id);
+        dispatch(deleteTask(task._id));
         onDelete();
-      } catch (err) {
-        console.error('Failed to delete task:', err);
-        setError('Failed to delete task');
-      }
     }
   };
 

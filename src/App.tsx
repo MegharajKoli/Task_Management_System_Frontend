@@ -1,7 +1,7 @@
 
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { TasksPage, UserManagement, Dashboard } from './components';
+import { TasksPage, UserManagement, Dashboard, Home } from './components';
 import { useAppDispatch, useAppSelector } from './store';
 import { setTheme ,toggleTheme} from './store/themeSlices';
 import './App.css';
@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme) {
       if (savedTheme !== theme) {
         dispatch(setTheme(savedTheme));
@@ -40,11 +40,16 @@ function App() {
       <div className="app-container">
         <nav className="navbar">
           <div className="navbar-brand">
-            <h1>Task Management System</h1>
+            <Link to="/" >
+              <h1>Task Management System</h1>
+            </Link>
           </div>
           <ul className="nav-links">
             <li>
-              <Link to="/">Tasks</Link>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/tasks">Tasks</Link>
             </li>
             <li>
               <Link to="/users">Users</Link>
@@ -60,7 +65,8 @@ function App() {
 
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<TasksPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/tasks" element={<TasksPage />} />
             <Route path="/users" element={<UserManagement />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>

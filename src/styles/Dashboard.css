@@ -24,10 +24,17 @@
 .dashboard-card {
   background-color: var(--card-bg);
   color: var(--text-color);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.5rem;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
 }
 
 .total-card {
@@ -36,16 +43,22 @@
 
 .total-card h3 {
   margin: 0 0 1rem 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .large-number {
   margin: 0;
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 2.8rem;
+  font-weight: 800;
   color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .dashboard-card h3 {
@@ -61,9 +74,16 @@
 }
 
 .breakdown-item {
-  background-color: var(--hover-bg);
+  background-color: var(--bg-secondary);
   padding: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border-left: 4px solid var(--primary-color);
+}
+
+.breakdown-item:hover {
+  background-color: var(--border-light);
+  transform: translateX(4px);
 }
 
 .breakdown-header {
@@ -105,12 +125,13 @@
   width: 100%;
   border-collapse: collapse;
   background-color: var(--card-bg);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .user-tasks-table thead {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
 }
 
@@ -122,7 +143,8 @@
 }
 
 .user-tasks-table tbody tr:hover {
-  background-color: var(--hover-bg);
+  background-color: var(--bg-secondary);
+  transition: all 0.2s ease;
 }
 
 .task-count {

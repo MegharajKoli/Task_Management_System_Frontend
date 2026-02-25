@@ -4,3 +4,4 @@ export { TaskDetails } from './TaskDetails';
 export { TasksPage } from './TasksPage';
 export { UserManagement } from './UserManagement';
 export { Dashboard } from './Dashboard';
+export { Home } from './Home';

@@ -60,6 +60,7 @@ export const TasksPage: React.FC = () => {
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
           onBack={handleBackToList}
+          num={1}
         />
       )}
     </div>

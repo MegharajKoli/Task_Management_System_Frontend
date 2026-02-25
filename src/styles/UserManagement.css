@@ -1,42 +1,47 @@
-/* User Management Styles */
+/* User Management - Modern SaaS Design */
+
 .user-management-container {
-  background-color: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .user-management-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 1rem;
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--spacing-lg);
 }
 
 .user-management-header h2 {
   margin: 0;
-  color: var(--text-color);
+  color: var(--text-primary);
+  font-size: 1.75rem;
+  font-weight: 700;
 }
 
 .user-form-card {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border: 1px solid #e0e0e0;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-xs);
 }
 
 .user-form-card h3 {
-  margin: 0 0 1.5rem 0;
-  color: var(--text-color);
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
 }
 
 .user-form-card form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .user-form-card button {
@@ -46,37 +51,55 @@
 
 .users-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
 }
 
 .user-card {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1.5rem;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
 }
 
 .user-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   transform: translateY(-2px);
+  border-color: var(--primary-color);
 }
 
 .user-card h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 var(--spacing-md) 0;
   color: var(--primary-color);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .user-card p {
-  margin: 0.5rem 0;
-  color: var(--text-color);
+  margin: var(--spacing-sm) 0;
+  color: var(--text-secondary);
   word-break: break-all;
+  font-size: 0.9rem;
 }
 
 .user-card strong {
-  color: #666;
+  color: var(--text-primary);
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .user-management-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .users-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-form-card form {
+    grid-template-columns: 1fr;
+  }
 }

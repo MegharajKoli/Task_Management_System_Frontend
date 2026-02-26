@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import type { ITask } from '../types';
-import { deleteTask } from '../store/taskSlice';
+import { deleteTask, fetchTaskById } from '../store/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import { fetchCommentsByTaskId, createComment, deleteComment } from '../store/commentSlice';
 import '../styles/TaskDetails.css';
+import { useNavigate , useParams } from 'react-router-dom';
 
-interface TaskDetailsProps {
-  task: ITask;
-  onEdit: () => void;
-  onDelete: () => void;
-  onBack: () => void;
-}
 
-export const TaskDetails: React.FC<TaskDetailsProps> = ({ task, onEdit, onDelete, onBack }) => {
+export const TaskDetails: React.FC = () => {
   const dispatch = useAppDispatch();
   const [newComment, setNewComment] = useState('');
   const { comments, loading, error, submitting } = useAppSelector(state => state.comments);
+  const {currentTask,loading: taskLoading, error: taskError} = useAppSelector(state => state.tasks);
+  const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    dispatch(fetchCommentsByTaskId(task._id));
-  }, [task._id, dispatch]);
+    if (!id) return;
+    dispatch(fetchTaskById(id));
+    dispatch(fetchCommentsByTaskId(id));
+  }, [id, dispatch]);
 
   const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    dispatch(createComment({ id: task._id, commentData: { content: newComment } }))
+    if (!id) return;
+    dispatch(createComment({ id: id, commentData: { content: newComment } }))
       .unwrap()
       .then(() => setNewComment(''));
   };
@@ -37,20 +37,34 @@ export const TaskDetails: React.FC<TaskDetailsProps> = ({ task, onEdit, onDelete
 
   const handleDeleteTask = async () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
-        dispatch(deleteTask(task._id));
-        onDelete();
+        if (!id) return;
+         try {
+      await dispatch(deleteTask(id)).unwrap();
+      navigate('/tasks');
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
     }
   };
-
+ 
+  if (taskLoading) {
+  return <div className="loading">Loading task...</div>;
+}
+if (taskError) {
+  return <div className="error-message">{taskError}</div>;
+}
+if (!currentTask) {
+  return <div className="error-message">Task not found</div>;
+}
   return (
     <div className="task-details-container">
       <div className="task-details-header">
-        <button className="btn-back" onClick={onBack}>
+        <button className="btn-back" onClick={() => navigate('/tasks')}>
           ← Back
         </button>
-        <h2>{task.title}</h2>
+        <h2>{currentTask.title}</h2>
         <div className="task-actions">
-          <button className="btn-primary" onClick={onEdit}>
+          <button className="btn-primary" onClick={() => navigate(`/tasks/${id}/edit`)}>
             Edit
           </button>
           <button className="btn-danger" onClick={handleDeleteTask}>
@@ -68,27 +82,27 @@ export const TaskDetails: React.FC<TaskDetailsProps> = ({ task, onEdit, onDelete
             <div className="info-grid">
               <div className="info-item">
                 <label>Title:</label>
-                <p>{task.title}</p>
+                <p>{currentTask.title}</p>
               </div>
               <div className="info-item">
                 <label>Description:</label>
-                <p>{task.description}</p>
+                <p>{currentTask.description}</p>
               </div>
               <div className="info-item">
                 <label>Status:</label>
-                <p className="status-badge">{task.status}</p>
+                <p className="status-badge">{currentTask.status}</p>
               </div>
               <div className="info-item">
                 <label>Priority:</label>
-                <p className="priority-badge">{task.priority}</p>
+                <p className="priority-badge">{currentTask.priority}</p>
               </div>
               <div className="info-item">
                 <label>Assigned To:</label>
-                <p>{typeof task.assigned_to === 'string' ? task.assigned_to : task.assigned_to?.name}</p>
+                <p>{typeof currentTask.assigned_to === 'string' ? currentTask.assigned_to : currentTask.assigned_to?.name}</p>
               </div>
               <div className="info-item">
                 <label>Created At:</label>
-                <p>{new Date(task.createdAt).toLocaleDateString()}</p>
+                <p>{new Date(currentTask.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
           </div>

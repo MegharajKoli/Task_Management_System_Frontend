@@ -33,7 +33,7 @@ export const fetchCommentsByTaskId = createAsyncThunk(
 
 // 3. CREATE comment
 export const createComment = createAsyncThunk(
-  'tasks/createComment',
+  'comments/createComment',
   async (
     payload: { id: string; commentData: CreateCommentDTO },
     { rejectWithValue }
@@ -50,7 +50,7 @@ export const createComment = createAsyncThunk(
 
 // 5. DELETE Comment
 export const deleteComment = createAsyncThunk(
-  'tasks/deleteTask',
+  'comments/deletecomments',
   async (id: string, { rejectWithValue }) => {
     try {
       await commentService.deleteComment(id);

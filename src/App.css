@@ -833,3 +833,49 @@ body {
 .mb-lg {
   margin-bottom: var(--spacing-lg);
 }
+.loading-card {
+  width: 100%;
+  height: 400px; /* Matches the typical height of your TaskList or Home hero */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: var(--text-muted, #666);
+  
+  /* The Magic: Animated Gradient Background */
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-bg, #f0f0f0) 25%,
+    var(--skeleton-shimmer, #e0e0e0) 50%,
+    var(--skeleton-bg, #f0f0f0) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+/* The Spinner */
+.loading-card::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--skeleton-shimmer, #ddd);
+  border-top: 4px solid var(--primary-color, #007bff); /* Your app's primary color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

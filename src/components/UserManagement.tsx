@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import type { IUser, CreateUserDTO } from '../types';
-import { userService } from '../api/userService';
+import type { CreateUserDTO } from '../types';
+import { useAppDispatch, useAppSelector } from '../store';
+import { fetchUsers, createUser } from '../store/userSlice';
 import '../styles/UserManagement.css';
 
 export const UserManagement: React.FC = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useAppDispatch();
+  const { users, loading, error, submitting } = useAppSelector(state => state.users);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -14,25 +15,12 @@ export const UserManagement: React.FC = () => {
     contact: '',
     password: '',
   });
-  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await userService.getUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to load users:', err);
-      setError('Failed to load users');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // fetchUsers handled by Redux thunk
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,11 +32,7 @@ export const UserManagement: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      await userService.createUser(formData as CreateUserDTO);
+    dispatch(createUser(formData as CreateUserDTO)).then(() => {
       setFormData({
         name: '',
         email: '',
@@ -56,13 +40,7 @@ export const UserManagement: React.FC = () => {
         password: '',
       });
       setShowForm(false);
-      await fetchUsers();
-    } catch (err) {
-      console.error('Failed to create user:', err);
-      setError('Failed to create user');
-    } finally {
-      setSubmitting(false);
-    }
+    });
   };
 
   return (
@@ -162,4 +140,4 @@ export const UserManagement: React.FC = () => {
       )}
     </div>
   );
-};
+}

@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Status, Priority } from '../types';
-import type { TaskReport, StatusType, PriorityType } from '../types';
-import { reportService } from '../api/reportService';
+import type { StatusType, PriorityType } from '../types';
+import { useAppDispatch, useAppSelector } from '../store';
+import { fetchReport } from '../store/dashboardSlice';
 import '../styles/Dashboard.css';
 
 export const Dashboard: React.FC = () => {
-  const [report, setReport] = useState<TaskReport | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { report, loading, error } = useAppSelector(state => state.dashboard);
 
   useEffect(() => {
-    fetchReport();
-  }, []);
+    dispatch(fetchReport());
+  }, [dispatch]);
 
-  const fetchReport = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await reportService.getTaskReport();
-      setReport(data);
-    } catch (err) {
-      console.error('Failed to load report:', err);
-      setError('Failed to load task report');
-    } finally {
-      setLoading(false);
-    }
+  const handleRefresh = () => {
+    dispatch(fetchReport());
   };
 
   const getStatusColor = (status: StatusType): string => {
@@ -140,7 +130,7 @@ export const Dashboard: React.FC = () => {
         )}
       </div>
 
-      <button className="btn-refresh" onClick={fetchReport}>
+      <button className="btn-refresh" onClick={handleRefresh}>
         Refresh Report
       </button>
     </div>

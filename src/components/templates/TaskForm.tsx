@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Status, Priority } from '../types';
-import type { ITask, CreateTaskDTO, UpdateTaskDTO, IUser } from '../types';
-import { taskService } from '../api/taskService';
-import { userService } from '../api/userService';
-import '../styles/TaskForm.css';
+import { Status, Priority } from '../../types';
+import type { ITask } from '../../types';
+import {  useAppSelector, useAppDispatch } from '../../store';
+import '../../styles/TaskForm.css';
+import { fetchUsers } from '../../store/userSlice';
 
 interface TaskFormProps {
   task?: ITask | null;
-  onSave: () => void;
+  onSubmit: (data: any) => void; 
   onCancel: () => void;
+  submitting: boolean;
+  loading?: boolean;
 }
 
-export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) => {
+export const TaskForm: React.FC<TaskFormProps> = ({ task, onSubmit, onCancel, submitting ,loading }) => {
+    const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    assigned_to: '' as string,
-    priority: Priority.Medium as typeof Priority[keyof typeof Priority],
-    status: Status.Open as typeof Status[keyof typeof Status],
+    title: task?.title || '',
+    description: task?.description || '',
+    assigned_to: typeof task?.assigned_to === 'string' ? task.assigned_to : (task?.assigned_to as any)?.email || '',
+    priority: task?.priority || Priority.Medium,
+    status: task?.status || Status.Open,
   });
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const { users: userList } = useAppSelector(state => state.users);
+
+   useEffect(() => {
     if (task) {
       setFormData({
         title: task.title,
@@ -33,53 +35,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
         status: task.status as typeof Status[keyof typeof Status],
       });
     }
-    fetchUsers();
-  }, [task]);
+    dispatch(fetchUsers());
+  }, [task, dispatch]);
 
-  const fetchUsers = async () => {
-    try {
-      const data = await userService.getUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to load users:', err);
-      setError('Failed to load users');
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (task?._id) {
-        // Update existing task
-        const updateData: UpdateTaskDTO = {
-          title: formData.title,
-          description: formData.description,
-          assigned_to: formData.assigned_to,
-          priority: formData.priority,
-          status: formData.status,
-        };
-        await taskService.updateTask(task._id, updateData);
-      } else {
-        // Create new task
-        const createData: CreateTaskDTO = {
-          title: formData.title,
-          description: formData.description,
-          assigned_to: formData.assigned_to,
-          priority: formData.priority,
-        };
-        await taskService.createTask(createData);
-      }
-      onSave();
-    } catch (err) {
-      setError('Failed to save task');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+    onSubmit(formData); 
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -94,7 +56,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
       <div className="task-form-card">
         <h2>{task ? 'Edit Task' : 'Create New Task'}</h2>
 
-        {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -134,7 +95,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
                 required
               >
                 <option value="">Select a user</option>
-                {users.map((user) => (
+                {userList.map((user) => (
                   <option key={user._id} value={user.email}>
                     {user.name}
                   </option>
@@ -169,7 +130,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancel }) =>
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
+              {submitting ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
             </button>
             <button type="button" className="btn-secondary" onClick={onCancel} disabled={loading}>
               Cancel

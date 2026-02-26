@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { TaskForm } from './templates/TaskForm';
+import  TaskForm  from './templates/TaskForm';
 import { createTask } from '../store/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import type { CreateTaskDTO } from '../types';
 
-export const CreateTaskPage: React.FC = () => {
+const CreateTaskPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { submitting } = useAppSelector(state => state.tasks);
@@ -26,3 +26,4 @@ export const CreateTaskPage: React.FC = () => {
     />
   );
 };
+export default CreateTaskPage;

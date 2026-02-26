@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { fetchReport } from '../store/dashboardSlice';
 import '../styles/Dashboard.css';
 
-export const Dashboard: React.FC = () => {
+const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { report, loading, error } = useAppSelector(state => state.dashboard);
 
@@ -136,3 +136,5 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
+
+export default Dashboard;

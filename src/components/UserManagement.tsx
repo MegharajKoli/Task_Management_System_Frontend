@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { fetchUsers, createUser } from '../store/userSlice';
 import '../styles/UserManagement.css';
 
-export const UserManagement: React.FC = () => {
+const UserManagement: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const { users, loading, error, submitting } = useAppSelector(state => state.users);
@@ -141,3 +141,5 @@ export const UserManagement: React.FC = () => {
     </div>
   );
 }
+
+export default UserManagement;

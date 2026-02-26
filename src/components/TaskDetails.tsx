@@ -6,7 +6,7 @@ import '../styles/TaskDetails.css';
 import { useNavigate , useParams } from 'react-router-dom';
 
 
-export const TaskDetails: React.FC = () => {
+const TaskDetails: React.FC = () => {
   const dispatch = useAppDispatch();
   const [newComment, setNewComment] = useState('');
   const { comments, loading, error, submitting } = useAppSelector(state => state.comments);
@@ -154,3 +154,5 @@ if (!currentTask) {
     </div>
   );
 };
+
+export default TaskDetails;

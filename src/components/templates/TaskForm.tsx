@@ -13,7 +13,7 @@ interface TaskFormProps {
   loading?: boolean;
 }
 
-export const TaskForm: React.FC<TaskFormProps> = ({ task, onSubmit, onCancel, submitting ,loading }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ task, onSubmit, onCancel, submitting ,loading }) => {
     const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
     title: task?.title || '',
@@ -141,3 +141,5 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onSubmit, onCancel, su
     </div>
   );
 };
+
+export default TaskForm;

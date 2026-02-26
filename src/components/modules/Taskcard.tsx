@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Status, Priority } from '../../types';
 import type { ITask, StatusType, PriorityType } from '../../types';
 
@@ -25,7 +25,7 @@ const getStatusBg = (status: StatusType): string => {
   }
 };
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task, onSelect }) => {
+const TaskCard: React.FC<TaskCardProps> = memo(({ task, onSelect }) => {
   const priorityColor = getPriorityColor(task.priority);
 
   return (
@@ -51,4 +51,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onSelect }) => {
       </div>
     </div>
   );
-};
+});
+
+export default memo(TaskCard);

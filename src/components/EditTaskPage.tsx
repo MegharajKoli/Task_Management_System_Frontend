@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { TaskForm } from './templates/TaskForm';
+import  TaskForm  from './templates/TaskForm';
 import { fetchTaskById, updateTask } from '../store/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
 import type { UpdateTaskDTO } from '../types';
 
-export const EditTaskPage: React.FC = () => {
+const EditTaskPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -44,3 +44,4 @@ if (!currentTask) {
     />
   );
 };
+export default EditTaskPage;

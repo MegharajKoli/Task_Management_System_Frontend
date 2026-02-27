@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useMemo, useCallback } from 'react';
 import { Status, Priority } from '../types';
 import type { StatusType, PriorityType } from '../types';
 import { useAppDispatch, useAppSelector } from '../store';
 import {  fetchTasks } from '../store/taskSlice';
 import '../styles/TaskList.css';
 import { useNavigate } from 'react-router-dom';
-import { TaskCard } from './modules/Taskcard';
+import  TaskCard  from './modules/Taskcard';
 
-
-export const TaskList: React.FC = () => {
+ const TaskList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { tasks, loading, error } = useAppSelector(state => state.tasks);
   const [filterStatus, setFilterStatus] = useState<StatusType | 'All'>('All');
@@ -19,15 +18,15 @@ export const TaskList: React.FC = () => {
     dispatch(fetchTasks());
   }, [dispatch]);
  
-  const handleTaskSelect = (id: string) => {
+  const handleTaskSelect = useCallback((id: string) => {
     navigate(`/tasks/${id}`);
-  }
+  }, [navigate]);
 
-  const filteredTasks = tasks.filter((task) => {
+  const filteredTasks = useMemo(() => tasks.filter((task) => {
     const statusMatch = filterStatus === 'All' || task.status === filterStatus;
     const priorityMatch = filterPriority === 'All' || task.priority === filterPriority;
     return statusMatch && priorityMatch;
-  });
+  }), [tasks, filterStatus, filterPriority]);
 
   
 
@@ -91,3 +90,5 @@ export const TaskList: React.FC = () => {
     </div>
   );
 };
+
+export default TaskList;

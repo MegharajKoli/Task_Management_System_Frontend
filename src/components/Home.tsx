@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 
-export function Home() {
+const Home: React.FC = () => {
   return (
     <div className="home-container">
       <section className="hero-section">

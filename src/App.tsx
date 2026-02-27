@@ -1,12 +1,18 @@
 
-import { useEffect } from 'react';
+import { useEffect , lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { UserManagement, Dashboard, Home, TaskList , TaskDetails ,CreateTaskPage , EditTaskPage} from './components';
 import  Navbar  from './components/modules/Navbar';
 import Footer from './components/modules/Footer';
 import { useAppDispatch, useAppSelector } from './store';
 import { toggleTheme } from './store/themeSlices';
 import './App.css';
+const Home = lazy(() => import('./components/Home'));
+const TaskList = lazy(() => import('./components/TaskList'));
+const TaskDetails = lazy(() => import('./components/TaskDetails'));
+const CreateTaskPage = lazy(() => import('./components/CreateTaskpage'));
+const EditTaskPage = lazy(() => import('./components/EditTaskPage'));
+const UserManagement = lazy(() => import('./components/UserManagement'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,6 +33,7 @@ function App() {
         <Navbar theme={theme} onThemeToggle={handleThemeToggle} />
 
         <main className="main-content">
+          <Suspense fallback={<div className="loading-card"></div>}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="tasks">
@@ -38,6 +45,7 @@ function App() {
             <Route path="/users/" element={<UserManagement />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
+          </Suspense>
         </main>
         <Footer />
       </div>

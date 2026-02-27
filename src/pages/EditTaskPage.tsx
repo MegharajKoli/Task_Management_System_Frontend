@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import  TaskForm  from './templates/TaskForm';
+import  TaskForm  from '../components/templates/TaskForm';
 import { fetchTaskById, updateTask } from '../store/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';

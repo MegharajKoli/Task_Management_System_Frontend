@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import {  fetchTasks } from '../store/taskSlice';
 import '../styles/TaskList.css';
 import { useNavigate } from 'react-router-dom';
-import  TaskCard  from './modules/Taskcard';
+import  TaskCard  from '../components/modules/Taskcard';
 
  const TaskList: React.FC = () => {
   const dispatch = useAppDispatch();

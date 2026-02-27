@@ -6,13 +6,13 @@ import Footer from './components/modules/Footer';
 import { useAppDispatch, useAppSelector } from './store';
 import { toggleTheme } from './store/themeSlices';
 import './App.css';
-const Home = lazy(() => import('./components/Home'));
-const TaskList = lazy(() => import('./components/TaskList'));
-const TaskDetails = lazy(() => import('./components/TaskDetails'));
-const CreateTaskPage = lazy(() => import('./components/CreateTaskpage'));
-const EditTaskPage = lazy(() => import('./components/EditTaskPage'));
-const UserManagement = lazy(() => import('./components/UserManagement'));
-const Dashboard = lazy(() => import('./components/Dashboard'));
+const Home = lazy(() => import('./pages/Home'));
+const TaskList = lazy(() => import('./pages/TaskList'));
+const TaskDetails = lazy(() => import('./components/modules/TaskDetails'));
+const CreateTaskPage = lazy(() => import('./pages/CreateTaskpage'));
+const EditTaskPage = lazy(() => import('./pages/EditTaskPage'));
+const UserManagement = lazy(() => import('./pages/UserManagement'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
 
 function App() {
   const dispatch = useAppDispatch();

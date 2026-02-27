@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { deleteTask, fetchTaskById } from '../store/taskSlice';
-import { useAppDispatch, useAppSelector } from '../store';
-import { fetchCommentsByTaskId, createComment, deleteComment } from '../store/commentSlice';
-import '../styles/TaskDetails.css';
+import { deleteTask, fetchTaskById } from '../../store/taskSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { fetchCommentsByTaskId, createComment, deleteComment } from '../../store/commentSlice';
+import '../../styles/TaskDetails.css';
 import { useNavigate , useParams } from 'react-router-dom';
 
 

@@ -20,8 +20,6 @@ const UserManagement: React.FC = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  // fetchUsers handled by Redux thunk
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

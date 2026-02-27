@@ -7,26 +7,27 @@ interface TaskCardProps {
   onSelect: (id: string) => void;
 }
 
-const getPriorityColor = (priority: PriorityType): string => {
+const getPriorityVar = (priority: PriorityType): string => {
   switch (priority) {
-    case Priority.High: return '#d32f2f';
-    case Priority.Medium: return '#f57c00';
-    case Priority.Low: return '#388e3c';
-    default: return '#666';
+    case Priority.High: return 'var(--priority-high)';
+    case Priority.Medium: return 'var(--priority-medium)';
+    case Priority.Low: return 'var(--priority-low)';
+    default: return 'var(--text-main)';
   }
 };
 
-const getStatusBg = (status: StatusType): string => {
+const getStatusVar = (status: StatusType): string => {
   switch (status) {
-    case Status.Open: return '#e3f2fd';
-    case Status.InProgress: return '#fff3e0';
-    case Status.Done: return '#e8f5e9';
-    default: return '#f5f5f5';
+    case Status.Open: return 'var(--status-open-bg)';
+    case Status.InProgress: return 'var(--status-progress-bg)';
+    case Status.Done: return 'var(--status-done-bg)';
+    default: return 'var(--bg-secondary)';
   }
 };
+
 
 const TaskCard: React.FC<TaskCardProps> = memo(({ task, onSelect }) => {
-  const priorityColor = getPriorityColor(task.priority);
+  const priorityColor = getPriorityVar(task.priority);
 
   return (
     <div
@@ -42,7 +43,7 @@ const TaskCard: React.FC<TaskCardProps> = memo(({ task, onSelect }) => {
       </div>
       <p className="task-description">{task.description}</p>
       <div className="task-footer">
-        <span className="status-badge" style={{ backgroundColor: getStatusBg(task.status) }}>
+        <span className="status-badge" style={{ backgroundColor: getStatusVar(task.status) }}>
           {task.status}
         </span>
         <span className="assigned-badge">

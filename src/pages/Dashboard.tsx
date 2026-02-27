@@ -17,31 +17,24 @@ const Dashboard: React.FC = () => {
     dispatch(fetchReport());
   };
 
-  const getStatusColor = (status: StatusType): string => {
-    switch (status) {
-      case Status.Open:
-        return '#2196f3';
-      case Status.InProgress:
-        return '#ff9800';
-      case Status.Done:
-        return '#4caf50';
-      default:
-        return '#666';
-    }
-  };
+  const getPriorityVar = (priority: PriorityType): string => {
+  switch (priority) {
+    case Priority.High: return 'var(--priority-high)';
+    case Priority.Medium: return 'var(--priority-medium)';
+    case Priority.Low: return 'var(--priority-low)';
+    default: return 'var(--text-main)';
+  }
+};
 
-  const getPriorityColor = (priority: PriorityType): string => {
-    switch (priority) {
-      case Priority.High:
-        return '#d32f2f';
-      case Priority.Medium:
-        return '#f57c00';
-      case Priority.Low:
-        return '#388e3c';
-      default:
-        return '#666';
-    }
-  };
+const getStatusVar = (status: StatusType): string => {
+  switch (status) {
+    case Status.Open: return 'var(--status-open-bg)';
+    case Status.InProgress: return 'var(--status-progress-bg)';
+    case Status.Done: return 'var(--status-done-bg)';
+    default: return 'var(--bg-secondary)';
+  }
+};
+ 
 
   if (loading) {
     return <div className="dashboard-loading">Loading dashboard...</div>;
@@ -75,7 +68,7 @@ const Dashboard: React.FC = () => {
                 <div className="breakdown-header">
                   <span
                     className="status-indicator"
-                    style={{ backgroundColor: getStatusColor(status) }}
+                    style={{ backgroundColor: getStatusVar(status) }}
                   ></span>
                   <span>{status}</span>
                 </div>
@@ -94,7 +87,7 @@ const Dashboard: React.FC = () => {
                 <div className="breakdown-header">
                   <span
                     className="priority-indicator"
-                    style={{ backgroundColor: getPriorityColor(priority) }}
+                    style={{ backgroundColor: getPriorityVar(priority) }}
                   ></span>
                   <span>{priority}</span>
                 </div>
